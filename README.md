@@ -28,4 +28,4 @@
         "webpack-dev-server": "^4.10.0"
     }
 
-12. vue 的声明文件 env.d.ts
+12. vue 的声明文件 shims.vue.ts
