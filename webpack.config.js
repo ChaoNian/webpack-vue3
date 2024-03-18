@@ -3,7 +3,7 @@ const path = require('path')
 const htmlWebpackPlugin = require('html-webpack-plugin')
 const {VueLoaderPlugin} = require('vue-loader/dist/index')
 const {CleanWebpackPlugin} = require('clean-webpack-plugin')
-// const FriendlyErrorsWebpackPlugin = require("friendly-errors-webpack-plugin");
+const FriendlyErrorsWebpackPlugin = require("friendly-errors-webpack-plugin");
 /**
  * @type {Configuration}
 */
@@ -38,13 +38,13 @@ const config = {
                 test: /\.png/,
                 type: 'asset/resource'
             },
-            // {
-            //     test: /\.m?js$/,
-            //     exclude: /node_modules/,
-            //     use: {
-            //         loader: "babel-loader"
-            //     }
-            // },
+            {
+                test: /\.m?js$/,
+                exclude: /node_modules/,
+                use: {
+                    loader: "babel-loader"
+                }
+            },
             
         ]
     },
@@ -68,25 +68,29 @@ const config = {
         }),
         new CleanWebpackPlugin(), //打包清空dist
         new VueLoaderPlugin(), //解析vue
-        // new FriendlyErrorsWebpackPlugin({
-        //     compilationSuccessInfo:{ //美化样式
-        //         messages:['You application is running here http://localhost:9001']
-        //     }
+        new FriendlyErrorsWebpackPlugin({
+            compilationSuccessInfo:{ //美化样式
+                messages:['You application is running here http://localhost:9001']
+            }
            
-        // })
+        })
     ],
     stats:"errors-only", //取消提示
     devServer: {
-        proxy: {
-            // 跨域
+        // proxy: {}, 文档上写着可以是对象， 但是这里跑起来后提示必须用数组
+        proxy: [
+            // {
+ // 跨域
             // '/api': ''
-        },
+            // }
+        ], //  https://webpack.js.org/configuration/dev-server/#devserverproxy
+           
         port: 9001,
         hot: true,
         open: true,
     },
     externals: {
-        vue: "Vue" // 性能优化CDN 引入 ，需要在html文件配置CDN地址<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+        // vue: "Vue" // 性能优化CDN 引入 ，需要在html文件配置CDN地址<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
     },
 
 }
